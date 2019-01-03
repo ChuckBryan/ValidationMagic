@@ -9,11 +9,14 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
 
 namespace ValidationMagic.web
 {
+    using Controllers;
     using Data;
     using Microsoft.EntityFrameworkCore;
+    using Models;
 
     public class Startup
     {
@@ -34,14 +37,15 @@ namespace ValidationMagic.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<AppDbContext>(opt =>
-            {
-                opt.UseInMemoryDatabase("RegistrationDb");
-               
-            });
-            
-            
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<AppDbContext>(opt => { opt.UseInMemoryDatabase("RegistrationDb"); });
+
+
+            services.AddMvc(options => { options.Filters.Add(typeof(ValidateModelFilter)); })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegistrationController>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
