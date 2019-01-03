@@ -1,0 +1,40 @@
+﻿@model ValidationMagic.web.Models.RegistrationModel.RegistrationModel
+
+<form class="col-6" asp-action="SaveRegistration">
+
+  
+  <div class="form-group">
+    <label asp-for="Email" class="font-weight-bold"></label>
+    <input asp-for="Email" class="form-control"/>
+    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>
+  
+  <div class="form-group" >
+    <label asp-for="HowHeard" class="font-weight-bold"></label>
+    <select asp-for="HowHeard" asp-items="@ViewBag.HowHeardOptions" class="form-control"></select>
+    <span asp-validation-for="HowHeard" class="text-danger"></span>
+  </div>
+  
+  
+  <div class="form-group">
+    <label asp-for="HowHeardOther" class="font-weight-bold"></label>
+    <input asp-for="HowHeardOther" class="form-control"/>
+    <span asp-validation-for="HowHeardOther" class="text-danger"></span>
+  </div>
+  
+  
+  <button type="submit">Register</button>
+</form>
+
+
+@section Scripts
+{
+<environment include="Development">
+  <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+  <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+</environment>
+<environment exclude="Development">
+  <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+  <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</environment>
+}
